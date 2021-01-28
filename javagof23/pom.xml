@@ -8,6 +8,13 @@
     <artifactId>javagof23</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
