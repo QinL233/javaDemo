@@ -16,8 +16,14 @@ import java.util.List;
  */
 public class CharsetConvertTest {
 
+    /**
+     * 将目录下所有文件转换成默认编码
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
-        String path = "D:\\JetBrains\\project\\JavaSE\\Gof23\\src\\main\\java";
+        System.out.println("default charset is "+Charset.defaultCharset().name());
+        String path = "D:\\test\\test";
         List<File> files = getFiles(path, new ArrayList<>());
         convert(files);
     }
@@ -48,38 +54,34 @@ public class CharsetConvertTest {
      */
     private static void convert(List<File> files) {
         files.forEach(file -> {
-            try (RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
+            try (RandomAccessFile raf = new RandomAccessFile(file, "rw");) {
                 FileChannel channel = raf.getChannel();
-                ByteBuffer buffer = ByteBuffer.allocate(1);
-                int len = -1;
-                while ((len = channel.read(buffer)) > 0) {
-                    //读取
-                    buffer.flip();
-                    bos.write(buffer.get());
-                    buffer.flip();
-                }
+                //一次读取
+                ByteBuffer buffer = ByteBuffer.allocate(new Long(file.length()).intValue());
+                channel.read(buffer);
+                buffer.flip();
                 CharsetDetector detector = new CharsetDetector();
-                detector.setText(bos.toByteArray());
+                detector.setText(buffer.array());
                 CharsetMatch match = detector.detect();
                 //获取源编码
                 String charsetName = match.getName();
+                System.out.println(file.getName() +" content in " + charsetName);
                 switch (charsetName) {
                     case "EUC-KR":
+                        System.out.println(file.getName() +" charsetName from EUC-KR to GB2312");
                         charsetName = "GB2312";
                         break;
                     case "ISO-8859-1":
+                        System.out.println(file.getName() +" charsetName from ISO-8859-1 to GBK");
                         charsetName = "GBK";
                         break;
                 }
-                if (!"UTF-8".equals(charsetName)) {
-                    System.out.println("The Content in " + charsetName);
+                if (!Charset.defaultCharset().name().equals(charsetName)) {
                     //按照charsetName解码成String
-                    String s = new String(bos.toByteArray(), charsetName);
-//                    System.out.println(s);
-                    //将String按utf-8加密成buffer
-                    ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(s);
-                    //覆盖源文件
+                    String s = new String(buffer.array(), charsetName);
+                    System.out.println(s);
+                    //将String按utf-8加密成buffer覆盖源文件
+                    ByteBuffer byteBuffer = ByteBuffer.wrap(s.getBytes());
                     channel.position(0);
                     channel.write(byteBuffer);
                 }
