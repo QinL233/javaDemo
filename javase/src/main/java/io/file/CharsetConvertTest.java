@@ -18,6 +18,8 @@ public class CharsetConvertTest {
 
     /**
      * 将目录下所有文件转换成默认编码
+     * string(char)>>> byte 解密/解码
+     * byte >>> char 加密/编码
      * @param args
      * @throws FileNotFoundException
      */
