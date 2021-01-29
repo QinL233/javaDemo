@@ -4,7 +4,7 @@ package service;
 import model.Person;
 
 /**
- * 使用default标记默认方法
+ * 1.使用default标记默认方法
  * @param <p>
  */
 public interface Factor2<p extends Person> {
