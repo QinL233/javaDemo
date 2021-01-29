@@ -4,11 +4,11 @@ import model.Person;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
+/**
+ * lambda包括简化内部类的语法操作，以及"::"方法引用构建"方法/接口实例"以便lambda方式操作
+ */
 public class LambdaTest {
 
     public Logger log=Logger.getLogger(LambdaTest.class);
@@ -92,16 +92,19 @@ public class LambdaTest {
         //Factor2 f6 = (s,a) -> new Person(getName(),getAge());
     }
 
-    //自定义::关键字引用
+    //自定义::关键字引用 >>>> 构建一个"接口"实例
     @Test
     public void test3(){
-
         //使用 :: 关键字来传递构造函数引用
         Factor1<Person> f1 =Person::new;
+        log.info(f1);
+        log.info(Objects.isNull(f1));
         log.info(f1.create("one", 11));
 
         //使用 :: 关键字来传递方法引用
         Factor1<Person> f2 =Person::create;
+        log.info(f2);
+        log.info(Objects.nonNull(f2));
         log.info(f2.create("two", 21));
     }
 }

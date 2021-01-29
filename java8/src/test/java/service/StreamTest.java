@@ -6,6 +6,11 @@ import org.junit.Test;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 1.对象必须能获取Stream对象
+ * 2.与"函数接口"结合使用简化代码：实现类似JavaScript将方法入参
+ * 3.有stream和parallelStream串行和并行之分
+ */
 public class StreamTest {
 
     private static Logger log=Logger.getLogger(StreamTest.class);
