@@ -80,7 +80,7 @@ public class CharsetConvertTest {
                     //按照charsetName解码成String
                     String s = new String(buffer.array(), charsetName);
                     System.out.println(s);
-                    //将String按utf-8加密成buffer覆盖源文件
+                    //将String按默认编码格式解密成buffer覆盖源文件
                     ByteBuffer byteBuffer = ByteBuffer.wrap(s.getBytes());
                     channel.position(0);
                     channel.write(byteBuffer);
