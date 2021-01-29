@@ -1,4 +1,4 @@
-package create.abstractFactory;
+package create.factoryAbstract;
 
 public interface Property {
     default String addProperty(){

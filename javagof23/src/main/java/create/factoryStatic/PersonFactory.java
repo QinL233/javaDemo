@@ -1,14 +1,14 @@
-package create.staticFactory;
+package create.factoryStatic;
 
 public class PersonFactory implements Factory {
     @Override
-    public void createSomeone() {
-        new Someone().getName();
+    public void createMan() {
+        new Man().getName();
     }
 
     @Override
-    public void createSomething() {
-        new Something().getName();
+    public void createWoman() {
+        new Woman().getName();
     }
 
     //通过类名获取对象

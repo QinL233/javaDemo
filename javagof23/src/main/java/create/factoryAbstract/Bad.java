@@ -1,4 +1,4 @@
-package create.abstractFactory;
+package create.factoryAbstract;
 
 public class Bad implements Property {
 }

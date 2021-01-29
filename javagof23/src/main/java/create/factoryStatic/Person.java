@@ -1,4 +1,4 @@
-package create.staticFactory;
+package create.factoryStatic;
 
 
 public interface Person {
