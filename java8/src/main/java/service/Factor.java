@@ -9,7 +9,7 @@ import model.Person;
  * @param <p>
  */
 @FunctionalInterface
-public interface Factor1<p extends Person> {
+public interface Factor<p extends Person> {
 
     p create(String s, Integer a);
 }

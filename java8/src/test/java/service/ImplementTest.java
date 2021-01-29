@@ -71,7 +71,7 @@ public class ImplementTest {
         //1.使用 Consumer 定制操作
         Consumer<Person> consumer = (p) -> log.info(p.toString());
         //使用工厂创建实例
-        Factor1 factor1 = (s, a) -> new Person(s, a);
+        Factor factor1 = (s, a) -> new Person(s, a);
         Person p1 = factor1.create("李白", 12);
         //放入实例执行操作
         consumer.accept(p1);
