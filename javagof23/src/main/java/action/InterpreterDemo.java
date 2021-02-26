@@ -18,10 +18,16 @@ public class InterpreterDemo {
     }
 }
 
+/**
+ * 1.解析者
+ */
 interface Interpreter{
     void execute(String s);
 }
 
+/**
+ * 2.处理器
+ */
 abstract class InterpreterHandler implements Interpreter{
     public void start(String s){
         execute(s);
