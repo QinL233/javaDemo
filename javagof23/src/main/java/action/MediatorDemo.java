@@ -14,10 +14,10 @@ public class MediatorDemo {
         //构建中介者
         MediatorHandler handler = new MediatorHandler() {
             @Override
-            void start(Mediator mediator, String msg) {
+            void start(Mediator mediator, Object data) {
                 this.mediators.forEach(c -> {
                     if (!c.equals(mediator)) {
-                        c.receive(msg);
+                        c.receive(data);
                     }
                 });
             }
@@ -26,26 +26,43 @@ public class MediatorDemo {
         //构建具体的同事类
         Mediator mediator1 = new Mediator(handler) {
             @Override
-            void receive(String msg) {
-                System.out.println("mediator1 receive:"+msg);
+            void send(Object data) {
+                handler.start(this,"mediator1 send "+data);
+            }
+
+            @Override
+            void receive(Object data) {
+                System.out.println("mediator1 receive:"+data);
             }
         };
+
         Mediator mediator2 = new Mediator(handler) {
             @Override
-            void receive(String msg) {
-                System.out.println("mediator2 receive:"+msg);
+            void send(Object data) {
+                handler.start(this,"mediator2 send "+data);
+            }
+
+            @Override
+            void receive(Object data) {
+                System.out.println("mediator2 receive:"+data);
             }
         };
+
         Mediator mediator3 = new Mediator(handler) {
             @Override
-            void receive(String msg) {
-                System.out.println("mediator3 receive:"+msg);
+            void send(Object data) {
+                handler.start(this,"mediator3 send "+data);
+            }
+
+            @Override
+            void receive(Object data) {
+                System.out.println("mediator3 receive:"+data);
             }
         };
 
         //发送消息
-        mediator1.send("你好呀，我是mediator1");
-        mediator2.send("你好呀，我是mediator2");
+        mediator1.send(1);
+        mediator2.send("我是mediator2");
     }
 }
 
@@ -63,11 +80,9 @@ abstract class Mediator {
         handler.register(this);
     }
 
-    public void send(String msg){
-        handler.start(this,msg);
-    }
+    abstract void send(Object data);
 
-    abstract void receive(String msg);
+    abstract void receive(Object data);
 }
 
 /**
@@ -83,5 +98,5 @@ abstract class MediatorHandler {
         mediators.add(mediator);
     }
 
-    abstract void start(Mediator mediator,String msg);
+    abstract void start(Mediator mediator,Object data);
 }
