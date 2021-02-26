@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 命令模式，注重将方法封装成对象传入执行器
+ * 命令模式：将[方法对象]通过orderHandler进行定制，实现运行规划
  *
  * @author LiaoQinZhou
  * @date: 2021/2/25 10:36
@@ -31,7 +31,7 @@ public class OrderDemo {
             }
         };
         //[重点]：将方法按对象传入执行器，可对多个方法定制执行过程，例如规划成aop，同步(单线程顺序)，异步(多线程)
-        Handler handler = new Handler();
+        OrderHandler handler = new OrderHandler();
         handler.addOrder(start);
         handler.addOrder(order);
         handler.addOrder(end);
@@ -50,7 +50,7 @@ interface Order {
 /**
  * 2.定义一个处理器，添加指定命令，并循环执行
  */
-class Handler {
+class OrderHandler {
     private List<Order> orders = new ArrayList<>();
 
     public void addOrder(Order order) {

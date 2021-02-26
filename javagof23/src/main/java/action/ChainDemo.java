@@ -3,17 +3,17 @@ package action;
 import java.util.Objects;
 
 /**
- * 责任链模式，注重处理器(对象)执行时[成链路形式]运行
+ * 责任链模式：将[方法对象]通过chainHandler进行串联，实现我们对方法对象呈链表形式运行
  * @author LiaoQinZhou
  * @date: 2021/2/25 10:06
  */
 public class ChainDemo {
     public static void main(String[] args) {
         //具体链路的实现
-        AbstractChain oneChain = new AbstractChain() {
+        ChainHandler handler1 = new ChainHandler() {
             @Override
-            boolean execute(int i) {
-                if(i < 30){
+            public boolean execute(int i) {
+                if(i < 10){
                     System.out.println(this.getClass().getName() + " handle success");
                     return true;
                 }
@@ -21,9 +21,9 @@ public class ChainDemo {
                 return false;
             }
         };
-        AbstractChain twoChain = new AbstractChain() {
+        ChainHandler handler2 = new ChainHandler() {
             @Override
-            boolean execute(int i) {
+            public boolean execute(int i) {
                 if(i < 20){
                     System.out.println(this.getClass().getName() + " handle success");
                     return true;
@@ -33,35 +33,39 @@ public class ChainDemo {
             }
         };
         //[重点]：串联链路，可以将方法呈现链表形式执行，例如实现拦截器作用
-        oneChain.setNextChain(twoChain);
+        handler1.setNextChain(handler2);
         //执行
-        oneChain.start(21);
+        System.out.println("=========================");
+        handler1.start(9);
+        System.out.println("=========================");
+        handler1.start(11);
+        System.out.println("=========================");
+        handler1.start(21);
+        System.out.println("=========================");
     }
 }
 
 /**
- * 1.定义抽象点
+ * 1.将方法/处理逻辑定制为一段chain
  */
-abstract class AbstractChain{
-
+interface Chain{
+    boolean execute(int i);
+}
+/**
+ * 2.定制chain处理器
+ */
+abstract class ChainHandler implements Chain{
     /**
-     * 2.下一个链路
+     * 1.下一个链路
      */
-    private AbstractChain nextChain;
+    private ChainHandler nextChain;
 
-    public void setNextChain(AbstractChain nextChain) {
+    public void setNextChain(ChainHandler nextChain) {
         this.nextChain = nextChain;
     }
 
     /**
-     * 3.具体方法返回执行成功or失败
-     * @param i
-     * @return
-     */
-    abstract boolean execute(int i);
-
-    /**
-     * 4.当前点的处理器，执行失败则运行下一个链路点的处理器
+     * 2.当前点的处理器，执行失败则运行下一个链路点的处理器
      */
     public void start(int i){
         if(!execute(i) && Objects.nonNull(nextChain)){
