@@ -7,14 +7,14 @@ package action;
  */
 public class InterpreterDemo {
     public static void main(String[] args) {
-        InterpreterHandler interpreter = new InterpreterHandler() {
+        InterpreterHandler handler = new InterpreterHandler() {
             @Override
             public void execute(String s) {
                 System.out.println(s.equals("admin"));
             }
         };
-        interpreter.start("aaa");
-        interpreter.start("admin");
+        handler.start("aaa");
+        handler.start("admin");
     }
 }
 
