@@ -1,5 +1,7 @@
 package action;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -9,39 +11,71 @@ import java.util.Objects;
  */
 public class ChainDemo {
     public static void main(String[] args) {
-        //具体链路的实现
-        ChainHandler handler1 = new ChainHandler() {
+//        //具体链路的实现
+//        ChainHandler handler1 = new ChainHandler() {
+//            @Override
+//            public boolean execute(int i) {
+//                if(i < 10){
+//                    System.out.println(this.getClass().getName() + " handle success");
+//                    return true;
+//                }
+//                System.out.println(this.getClass().getName() + " handle failure");
+//                return false;
+//            }
+//        };
+//        ChainHandler handler2 = new ChainHandler() {
+//            @Override
+//            public boolean execute(int i) {
+//                if(i < 20){
+//                    System.out.println(this.getClass().getName() + " handle success");
+//                    return true;
+//                }
+//                System.out.println(this.getClass().getName() + " handle failure");
+//                return false;
+//            }
+//        };
+//        //[重点]：串联链路，可以将方法呈现链表形式执行，例如实现拦截器作用
+//        handler1.setNextChain(handler2);
+//        //执行
+//        System.out.println("=========================");
+//        handler1.start(9);
+//        System.out.println("=========================");
+//        handler1.start(11);
+//        System.out.println("=========================");
+//        handler1.start(21);
+//        System.out.println("=========================");
+
+        List<Integer> list = new ArrayList<>();
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        ChainHandler startHandler = new ChainHandler() {
             @Override
             public boolean execute(int i) {
-                if(i < 10){
-                    System.out.println(this.getClass().getName() + " handle success");
-                    return true;
-                }
-                System.out.println(this.getClass().getName() + " handle failure");
-                return false;
+                System.out.println(i);
+                return true;
             }
         };
-        ChainHandler handler2 = new ChainHandler() {
-            @Override
-            public boolean execute(int i) {
-                if(i < 20){
-                    System.out.println(this.getClass().getName() + " handle success");
+
+        ChainHandler lastHandler = startHandler.getNextChain();
+        for(int i =0;i<list.size();i++){
+            ChainHandler handler = new ChainHandler() {
+                @Override
+                public boolean execute(int i) {
+                    System.out.println(i);
                     return true;
                 }
-                System.out.println(this.getClass().getName() + " handle failure");
-                return false;
+            };
+            if(Objects.nonNull(lastHandler)){
+                lastHandler.setNextChain(handler);
             }
-        };
-        //[重点]：串联链路，可以将方法呈现链表形式执行，例如实现拦截器作用
-        handler1.setNextChain(handler2);
-        //执行
-        System.out.println("=========================");
-        handler1.start(9);
-        System.out.println("=========================");
-        handler1.start(11);
-        System.out.println("=========================");
-        handler1.start(21);
-        System.out.println("=========================");
+            lastHandler = handler;
+        }
+        System.out.println(startHandler);
+        startHandler.start(1);
     }
 }
 
@@ -59,6 +93,10 @@ abstract class ChainHandler implements Chain{
      * 1.下一个链路
      */
     private ChainHandler nextChain;
+
+    public ChainHandler getNextChain() {
+        return nextChain;
+    }
 
     public void setNextChain(ChainHandler nextChain) {
         this.nextChain = nextChain;
