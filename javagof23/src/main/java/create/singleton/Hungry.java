@@ -3,7 +3,9 @@ package create.singleton;
 import java.io.Serializable;
 
 /**
- * 单例模式--饿汉,在对象创建开始时就创建实例，获取方法中返回该实例
+ * 单例模式--饿汉
+ * 1、在对象创建开始时就创建实例，获取方法中返回该实例
+ * 2、线程安全
  * @author LQZ
  *
  */
